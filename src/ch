@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/opt/miniconda3/envs/mase/bin/python
 from chop.cli import ChopCLI
 
 if __name__ == "__main__":
