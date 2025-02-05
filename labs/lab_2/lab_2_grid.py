@@ -2,6 +2,7 @@ import os
 from chop.tools import get_tokenized_dataset
 from optuna.samplers import GridSampler, TPESampler
 import optuna
+from optuna.trial._trial import Trial
 import torch.nn as nn
 from chop.nn.modules import Identity
 from transformers import AutoConfig, AutoModelForSequenceClassification
@@ -33,7 +34,7 @@ search_space = {
 
 
 
-def construct_model(trial):
+def construct_model(trial: Trial):
     config = AutoConfig.from_pretrained(checkpoint)
 
     # Update the paramaters in the config
@@ -70,7 +71,7 @@ def construct_model(trial):
 
 
 
-def objective(trial):
+def objective(trial: Trial):
 
     # Define the model
     model = construct_model(trial)

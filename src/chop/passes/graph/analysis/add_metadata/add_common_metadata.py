@@ -233,7 +233,6 @@ def graph_iterator_for_metadata(
             analyse_fn = analyse_common_parameters_function
         elif node.op == "call_method":
             self_obj, *args = load_arg(node.args, env)
-            print(self_obj)
             kwargs = load_arg(node.kwargs, env)
             result = getattr(self_obj, node.target)(*args, **kwargs)
             analyse_fn = analyse_common_parameters_method
@@ -488,7 +487,6 @@ def add_common_metadata_analysis_pass(
         pass_args = {k: v for k, v in pass_args.items() if k != "dummy_in"}
         pass_args["dummy_in"] = dummy_in
     elif pass_args.get("dummy_in", None) is None:
-        print(type(graph.model))
         raise ValueError(
             "dummy_in must be provided for add_common_metadata_analysis_pass."
         )

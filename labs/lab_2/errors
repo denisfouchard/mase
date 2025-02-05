@@ -1,0 +1,152 @@
+File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/labs/lab_2/lab_2_compression.py", line 129, in objective
+    mg, _ = pipe(
+            ^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 72, in __call__
+    mg, pass_outputs = self._run_pass_group(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 53, in _run_pass_group
+    mg, pass_output = pass_fn(mg, pass_args=args)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/analysis/add_metadata/add_common_metadata.py", line 498, in add_common_metadata_analysis_pass
+    graph = graph_iterator_for_metadata(graph, **pass_args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/analysis/add_metadata/add_common_metadata.py", line 243, in graph_iterator_for_metadata
+    result = modules[node.target](*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 801, in module_call_wrapper
+    return self.call_module(mod, forward, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1189, in call_module
+    return super().call_module(m, forward, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 513, in call_module
+    module_qualified_name = self.path_of_module(m)
+                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1404, in path_of_module
+    raise e
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1399, in path_of_module
+    return super().path_of_module(mod)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 468, in path_of_module
+    raise NameError("module is not installed as a submodule")
+NameError: module is not installed as a submodule
+
+
+Trial 1 failed with parameters: {'num_layers': 2, 'num_heads': 8, 'hidden_size': 384, 'intermediate_size': 1024, 'bert.encoder.layer.0.attention.self.query_type': <class 'torch.nn.modules.linear.Linear'>, 'bert.encoder.layer.0.attention.self.key_type': <class 'torch.nn.modules.linear.Linear'>, 'bert.encoder.layer.0.attention.self.value_type': <class 'torch.nn.modules.linear.Linear'>, 'bert.encoder.layer.0.attention.output.dense_type': <class 'chop.nn.modules.identity.Identity'>, 'bert.encoder.layer.1.attention.self.query_type': <class 'chop.nn.modules.identity.Identity'>, 'bert.encoder.layer.1.attention.self.key_type': <class 'chop.nn.modules.identity.Identity'>, 'bert.encoder.layer.1.attention.self.value_type': <class 'chop.nn.modules.identity.Identity'>, 'bert.encoder.layer.1.attention.output.dense_type': <class 'torch.nn.modules.linear.Linear'>, 'bert.pooler.dense_type': <class 'torch.nn.modules.linear.Linear'>} because of the following error: ValueError('Unknown call_function node: <function cross_entropy at 0x7263ccf3e200> with name cross_entropy').
+Traceback (most recent call last):
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/labs/lab_2/lab_2_compression.py", line 129, in objective
+    mg, _ = pipe(
+            ^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 72, in __call__
+    mg, pass_outputs = self._run_pass_group(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 53, in _run_pass_group
+    mg, pass_output = pass_fn(mg, pass_args=args)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/analysis/add_metadata/add_common_metadata.py", line 497, in add_common_metadata_analysis_pass
+    graph = graph_iterator_for_mase_ops(graph)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/analysis/add_metadata/add_common_metadata.py", line 145, in graph_iterator_for_mase_ops
+    raise ValueError(
+ValueError: Unknown call_function node: <function cross_entropy at 0x7263ccf3e200> with name cross_entropy
+
+Traceback (most recent call last):
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/labs/lab_2/lab_2_compression.py", line 129, in objective
+    mg, _ = pipe(
+            ^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 72, in __call__
+    mg, pass_outputs = self._run_pass_group(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 53, in _run_pass_group
+    mg, pass_output = pass_fn(mg, pass_args=args)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/analysis/add_metadata/add_common_metadata.py", line 498, in add_common_metadata_analysis_pass
+    graph = graph_iterator_for_metadata(graph, **pass_args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/analysis/add_metadata/add_common_metadata.py", line 243, in graph_iterator_for_metadata
+    result = modules[node.target](*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 801, in module_call_wrapper
+    return self.call_module(mod, forward, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1189, in call_module
+    return super().call_module(m, forward, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 513, in call_module
+    module_qualified_name = self.path_of_module(m)
+                            ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1404, in path_of_module
+    raise e
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1399, in path_of_module
+    return super().path_of_module(mod)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 477, in path_of_module
+    raise NameError("module is not installed as a submodule")
+NameError: module is not installed as a submodule
+
+
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/labs/lab_2/lab_2_compression.py", line 125, in objective
+    mg = MaseGraph(model, hf_input_names=['input_ids', 'attention_mask', 'token_type_ids', 'labels' ])
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/ir/graph/mase_graph.py", line 303, in __init__
+    self.model = trace_torch_module(
+                 ^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/ir/graph/mase_graph.py", line 148, in trace_torch_module
+    graph_module = hf_symbolic_trace(
+                   ^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1502, in symbolic_trace
+    traced_graph = tracer.trace(model, concrete_args=concrete_args)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/transformers/utils/fx.py", line 1325, in trace
+    self.graph = super().trace(root, concrete_args=concrete_args)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 803, in trace
+    with _new_patcher() as patcher:
+         ^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/contextlib.py", line 144, in __exit__
+    next(self.gen)
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/torch/fx/_symbolic_trace.py", line 1114, in _new_patcher
+    assert CURRENT_PATCHER is not None
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+[W 2025-02-04 18:02:17,051] Trial 1 failed with value None.
+Traceback (most recent call last):
+  File "/home/infres/dfouchard-21/mase/labs/lab_2/lab_2_compression.py", line 160, in <module>
+    study.optimize(
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/study.py", line 475, in optimize
+    _optimize(
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 63, in _optimize
+    _optimize_sequential(
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 160, in _optimize_sequential
+    frozen_trial = _run_trial(study, func, catch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 248, in _run_trial
+    raise func_err
+  File "/home/infres/dfouchard-21/miniconda3/envs/mase/lib/python3.12/site-packages/optuna/study/_optimize.py", line 197, in _run_trial
+    value_or_values = func(trial)
+                      ^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/labs/lab_2/lab_2_compression.py", line 129, in objective
+    mg, _ = pipe(
+            ^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 72, in __call__
+    mg, pass_outputs = self._run_pass_group(
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/pipelines/auto_pipeline.py", line 53, in _run_pass_group
+    mg, pass_output = pass_fn(mg, pass_args=args)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/infres/dfouchard-21/mase/src/chop/passes/graph/transforms/quantize/quantize.py", line 248, in quantize_transform_pass
+    by = pass_args.pop("by")
+         KeyError: 'by'

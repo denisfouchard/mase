@@ -11,7 +11,8 @@ from chop.tools import get_trainer
 from chop.pipelines import CompressionPipeline
 from chop import MaseGraph
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+device = torch.device("cuda")
+
 checkpoint = "DeepWokLab/bert-tiny"
 tokenizer_checkpoint = "DeepWokLab/bert-tiny"
 dataset_name = "imdb"
@@ -35,41 +36,6 @@ search_space = {
     ],
 }
 
-quantization_config = {
-        "by": "type",
-        "default": {
-            "config": {
-                "name": None,
-            }
-        },
-        "linear": {
-            "config": {
-                "name": "integer",
-                # data
-                "data_in_width": 16,
-                "data_in_frac_width": 8,
-                # weight
-                "weight_width": 16,
-                "weight_frac_width": 8,
-                # bias
-                "bias_width": 16,
-                "bias_frac_width": 8,
-            }
-        },
-    }
-    
-pruning_config = {
-    "weight": {
-        "sparsity": 0.3,
-        "method": "l1-norm",
-        "scope": "local",
-    },
-    "activation": {
-        "sparsity": 0.3,
-        "method": "l1-norm",
-        "scope": "local",
-    },
-}
 
 
 def construct_model(trial):
@@ -106,10 +72,58 @@ def construct_model(trial):
     return trial_model
 
 
-def objective_test(trial):
+def objective(trial):
+    quantization_config = {
+            "by": "type",
+            "default": {
+                "config": {
+                    "name": None,
+                }
+            },
+            "linear": {
+                "config": {
+                    "name": "integer",
+                    # data
+                    "data_in_width": 16,
+                    "data_in_frac_width": 8,
+                    # weight
+                    "weight_width": 16,
+                    "weight_frac_width": 8,
+                    # bias
+                    "bias_width": 16,
+                    "bias_frac_width": 8,
+                }
+            },
+        }
+        
+    pruning_config = {
+        "weight": {
+            "sparsity": 0.3,
+            "method": "l1-norm",
+            "scope": "local",
+        },
+        "activation": {
+            "sparsity": 0.3,
+            "method": "l1-norm",
+            "scope": "local",
+        },
+    }
+    # Define the model
     model = construct_model(trial)
-    model(dataset["train"][:2])
-    mg = MaseGraph(model)
+    model.to(device)
+    print(device)
+    trainer = get_trainer(
+        model=model,
+        tokenized_dataset=dataset,
+        tokenizer=tokenizer,
+        evaluate_metric="accuracy",
+        num_train_epochs=2,
+    )
+
+    trainer.train()
+
+    mg = MaseGraph(model, hf_input_names=['input_ids', 'attention_mask', 'token_type_ids', 'labels'])
+    mg.model.to("cpu")
     pipe = CompressionPipeline()
 
     mg, _ = pipe(
@@ -119,14 +133,7 @@ def objective_test(trial):
             "prune_transform_pass": pruning_config,
         },
     )
-
-    mg.model(dataset["train"]["input_ids"][:2])
-    return 0
-
-def objective(trial):
-    # Define the model
-    model = construct_model(trial)
-    device = model.device
+    model = mg.model.to(device)
     trainer = get_trainer(
         model=model,
         tokenized_dataset=dataset,
@@ -134,33 +141,15 @@ def objective(trial):
         evaluate_metric="accuracy",
         num_train_epochs=1,
     )
-
-    trainer.train()
-
-    mg = MaseGraph(model)
-    pipe = CompressionPipeline()
-
-    mg, _ = pipe(
-        mg,
-        pass_args={
-            "quantize_transform_pass": quantization_config,
-            "prune_transform_pass": pruning_config,
-        },
-    )
-    mg.model.to(device)
-    # trainer = get_trainer(
-    #     model=mg.model,
-    #     tokenized_dataset=dataset,
-    #     tokenizer=tokenizer,
-    #     evaluate_metric="accuracy",
-    #     num_train_epochs=1,
-    # )
-    trainer.args.per_device_train_batch_size = 40
+    
+    # Set the model as an attribute so we can fetch it later
+    
     trainer.train()
     eval_results = trainer.evaluate()
-    # Set the model as an attribute so we can fetch it later
-    trial.set_user_attr("model", mg)
-
+    # Flush the cache
+    torch.cuda.empty_cache()
+    # Delete the model from the GPU
+    del model
     return eval_results["eval_accuracy"]
 
 
@@ -168,13 +157,13 @@ if __name__ == "__main__":
     sampler = TPESampler()
     study = optuna.create_study(
         direction="maximize",
-        study_name="bert-tiny-nas-study",
+        study_name="bert-tiny-compression-pipeline",
         sampler=sampler,
     )
 
     study.optimize(
         objective,
-        n_trials=1,
+        n_trials=20,
         timeout=60 * 60 * 24,
         n_jobs=1,
     )
