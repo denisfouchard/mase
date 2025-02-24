@@ -4,7 +4,7 @@ import dill
 from chop.tools import get_trainer
 import random
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 checkpoint = "DeepWokLab/bert-tiny"
 tokenizer_checkpoint = "DeepWokLab/bert-tiny"
 dataset_name = "imdb"
@@ -63,11 +63,11 @@ def construct_model(trial):
             # If the chosen layer is integer, define the low precision config
             if new_layer_cls == LinearInteger:
                 width = trial.suggest_categorical(
-                    "width",
+                    f"{name}_width",
                     search_space["width_choices"],
                 )
                 frac_width = trial.suggest_categorical(
-                    "frac_width",
+                    f"{name}_frac_width",
                     search_space["frac_width_choices"],
                 )
                 kwargs["config"] = {
@@ -80,15 +80,15 @@ def construct_model(trial):
                 }
             elif new_layer_cls == LinearMinifloatDenorm:
                 width = trial.suggest_categorical(
-                    "width",
+                    f"{name}_width",
                     search_space["width_choices"],
                 )
                 exponent_width = trial.suggest_categorical(
-                    "exponent_width",
+                    f"{name}_exponent_width",
                     search_space["frac_width_choices"],
                 )
                 exponent_bias = trial.suggest_categorical(
-                    "exponent_bias",
+                    f"{name}_exponent_bias",
                     search_space["frac_width_choices"],
                 )
                 kwargs["config"] = {
@@ -105,15 +105,15 @@ def construct_model(trial):
 
             elif new_layer_cls == LinearMinifloatIEEE:
                 width = trial.suggest_categorical(
-                    "width",
+                    f"{name}_width",
                     search_space["width_choices"],
                 )
                 exponent_width = trial.suggest_categorical(
-                    "exponent_width",
+                    f"{name}_exponent_width",
                     search_space["frac_width_choices"],
                 )
                 exponent_bias = trial.suggest_categorical(
-                    "exponent_bias",
+                    f"{name}_exponent_bias",
                     search_space["frac_width_choices"],
                 )
                 kwargs["config"] = {
@@ -148,9 +148,9 @@ def objective(trial):
         tokenized_dataset=dataset,
         tokenizer=tokenizer,
         evaluate_metric="accuracy",
-        num_train_epochs=0.02,
+        num_train_epochs=2,
     )
-
+    model.to("cuda")
     trainer.train()
     eval_results = trainer.evaluate()
 
@@ -166,7 +166,7 @@ if __name__ == "__main__":
     from optuna.samplers import GridSampler, RandomSampler, TPESampler
     import optuna
 
-    sampler = RandomSampler()
+    sampler = TPESampler()
     study = optuna.create_study(
         direction="maximize",
         study_name="bert-tiny-nas-study",

@@ -167,3 +167,6 @@ prof/
 # HuggingFace trainer cache
 mase-trainer/
 test-trainer/
+
+*.md
+*.ipynb
