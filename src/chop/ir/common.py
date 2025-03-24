@@ -53,6 +53,7 @@ MASE_IMPLICIT_FUNCS = [
     "index_select",
     "detach",
     "tensor",
+    "softmax",
 ]
 
 MASE_MODULE_RELATED_FUNCS = [

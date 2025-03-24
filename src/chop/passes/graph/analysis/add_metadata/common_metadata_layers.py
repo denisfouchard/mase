@@ -464,7 +464,10 @@ method_data = {
     # https://pytorch.org/docs/stable/generated/torch.Tensor.int.html#torch-tensor-int
     "int": {"memory_format": "config"},
     "_assert": {"input": "data_in"},
+    # https://pytorch.org/docs/stable/generated/torch.Tensor.flatten.html
     "flatten": {"start_dim": "config", "end_dim": "config"},
+    # https://pytorch.org/docs/stable/generated/torch.Tensor.softmax.html
+    "softmax": {"dim": "config"},
 }
 
 # ----------------------------------------------------------
